@@ -86,12 +86,19 @@ export default function Inventory() {
             </div>
             <div>
               <label className="label">Talla</label>
-              <input
+              <select
                 className="input"
                 value={form.talla}
                 onChange={(e) => setForm({ ...form, talla: e.target.value })}
                 required
-              />
+              >
+                <option value="">Seleccionar</option>
+                <option value="XS">XS</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+              </select>
             </div>
             <div>
               <label className="label">Cantidad</label>
@@ -216,14 +223,21 @@ export default function Inventory() {
                   </div>
                   <div>
                     <label className="label">Talla</label>
-                    <input
+                    <select
                       className="input"
                       value={editing.talla}
                       onChange={(e) =>
                         setEditing({ ...editing, talla: e.target.value })
                       }
                       required
-                    />
+                    >
+                      <option value="">Seleccionar talla</option>
+                      <option value="XS">XS</option>
+                      <option value="S">S</option>
+                      <option value="M">M</option>
+                      <option value="L">L</option>
+                      <option value="XL">XL</option>
+                    </select>
                   </div>
                   <div>
                     <label className="label">Cantidad</label>
