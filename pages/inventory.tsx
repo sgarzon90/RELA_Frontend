@@ -6,7 +6,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "../lib/api";
-import { Trash2, Edit, X } from "lucide-react";
+import { Trash2, Edit, X, Image as ImageIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Inventory() {
@@ -18,7 +18,10 @@ export default function Inventory() {
     cantidad: 0,
     precio: 0,
   });
+  const [foto, setFoto] = useState<File | null>(null);
   const [editing, setEditing] = useState<any | null>(null);
+  const [editingFoto, setEditingFoto] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null); // ✅ para modal de foto
 
   const load = async () => setItems((await getProducts()) as any[]);
   useEffect(() => {
@@ -27,12 +30,17 @@ export default function Inventory() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createProduct({
-      ...form,
-      cantidad: Number(form.cantidad),
-      precio: Number(form.precio),
+    const formData = new FormData();
+    Object.entries(form).forEach(([key, value]) => {
+      formData.append(key, String(value));
     });
+    if (foto) {
+      formData.append("foto", foto);
+    }
+
+    await createProduct(formData);
     setForm({ tipo: "", color: "", talla: "", cantidad: 0, precio: 0 });
+    setFoto(null);
     await load();
   };
 
@@ -46,12 +54,21 @@ export default function Inventory() {
   const onUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editing) return;
-    await updateProduct(editing.id, {
-      ...editing,
-      cantidad: Number(editing.cantidad),
-      precio: Number(editing.precio),
+
+    const formData = new FormData();
+    Object.entries(editing).forEach(([key, value]) => {
+      if (key !== "fotoUrl") {
+        formData.append(key, String(value));
+      }
     });
+
+    if (editingFoto) {
+      formData.append("foto", editingFoto);
+    }
+
+    await updateProduct(editing.id, formData);
     setEditing(null);
+    setEditingFoto(null);
     await load();
   };
 
@@ -64,7 +81,7 @@ export default function Inventory() {
           <h2 className="text-xl font-semibold mb-4">Agregar producto</h2>
           <form
             onSubmit={onSubmit}
-            className="grid md:grid-cols-6 gap-3 items-end"
+            className="grid md:grid-cols-7 gap-3 items-end"
           >
             <div>
               <label className="label">Tipo</label>
@@ -125,6 +142,14 @@ export default function Inventory() {
                 required
               />
             </div>
+            <div>
+              <label className="label">Foto</label>
+              <input
+                type="file"
+                className="input"
+                onChange={(e) => setFoto(e.target.files ? e.target.files[0] : null)}
+              />
+            </div>
             <button className="btn-primary" type="submit">
               Guardar
             </button>
@@ -143,6 +168,7 @@ export default function Inventory() {
                 <th>Talla</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
+                <th>Foto</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -155,6 +181,20 @@ export default function Inventory() {
                   <td>{p.talla}</td>
                   <td>{p.cantidad}</td>
                   <td>${Number(p.precio).toLocaleString()}</td>
+                  <td>
+                    {p.fotoUrl ? (
+                      <button
+                        onClick={() =>
+                          setSelectedImage(`http://localhost:4000/uploads/${p.fotoUrl}`)
+                        }
+                        className="text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                      >
+                        <ImageIcon size={16} /> Ver
+                      </button>
+                    ) : (
+                      <span className="text-gray-400 italic">Sin foto</span>
+                    )}
+                  </td>
                   <td className="flex gap-2">
                     <button
                       onClick={() => setEditing(p)}
@@ -270,10 +310,51 @@ export default function Inventory() {
                       required
                     />
                   </div>
+                  <div>
+                    <label className="label">Foto</label>
+                    <input
+                      type="file"
+                      className="input"
+                      onChange={(e) =>
+                        setEditingFoto(e.target.files ? e.target.files[0] : null)
+                      }
+                    />
+                  </div>
                   <button className="btn-primary mt-2" type="submit">
                     Actualizar
                   </button>
                 </form>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* MODAL VER FOTO */}
+        <AnimatePresence>
+          {selectedImage && (
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <motion.div
+                className="bg-white rounded-lg shadow-lg p-4 relative max-w-2xl"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+              >
+                <button
+                  onClick={() => setSelectedImage(null)}
+                  className="absolute top-2 right-2 text-gray-600 hover:text-black"
+                >
+                  <X size={20} />
+                </button>
+                <img
+                  src={selectedImage}
+                  alt="Foto del producto"
+                  className="max-h-[70vh] mx-auto rounded"
+                />
               </motion.div>
             </motion.div>
           )}

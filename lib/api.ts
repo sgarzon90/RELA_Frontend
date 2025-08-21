@@ -1,8 +1,13 @@
 const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 async function http(url: string, opts?: RequestInit) {
+  const headers: Record<string, string> = {};
+  if (!(opts?.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
+
   const res = await fetch(`${BASE}${url}`, {
-    headers: { "Content-Type": "application/json" },
+    headers,
     ...opts,
   });
 
@@ -34,10 +39,10 @@ async function http(url: string, opts?: RequestInit) {
 }
 
 export const getProducts = () => http("/products");
-export const createProduct = (data: any) =>
-  http("/products", { method: "POST", body: JSON.stringify(data) });
-export const updateProduct = (id: number, data: any) =>
-  http(`/products/${id}`, { method: "PATCH", body: JSON.stringify(data) });
+export const createProduct = (data: FormData) =>
+  http("/products", { method: "POST", body: data });
+export const updateProduct = (id: number, data: FormData) =>
+  http(`/products/${id}`, { method: "PATCH", body: data });
 export const deleteProduct = (id: number) =>
   http(`/products/${id}`, { method: "DELETE" });
 
