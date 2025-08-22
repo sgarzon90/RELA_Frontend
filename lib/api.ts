@@ -6,6 +6,11 @@ async function http(url: string, opts?: RequestInit) {
     headers["Content-Type"] = "application/json";
   }
 
+  const token = localStorage.getItem("token");
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const res = await fetch(`${BASE}${url}`, {
     headers,
     ...opts,
@@ -50,5 +55,23 @@ export const getSales = (status?: string) =>
   http(`/sales${status ? `?status=${status}` : ""}`);
 export const createSale = (data: any) =>
   http("/sales", { method: "POST", body: JSON.stringify(data) });
+export const updateSale = (id: number, data: any) =>
+  http(`/sales/${id}`, { method: "PATCH", body: JSON.stringify(data) });
+export const deleteSale = (id: number) =>
+  http(`/sales/${id}`, { method: "DELETE" });
 export const createPayment = (data: any) =>
   http("/payments", { method: "POST", body: JSON.stringify(data) });
+
+export const getSummary = () => http("/reports/summary");
+export const getTopSellingProducts = () => http("/reports/top-selling-products");
+
+export const login = (data: any) =>
+  http("/auth/login", { method: "POST", body: JSON.stringify(data) });
+
+export const getUsers = () => http("/users");
+export const createUser = (data: any) =>
+  http("/users", { method: "POST", body: JSON.stringify(data) });
+export const updateUser = (id: number, data: any) =>
+  http(`/users/${id}`, { method: "PATCH", body: JSON.stringify(data) });
+export const deleteUser = (id: number) =>
+  http(`/users/${id}`, { method: "DELETE" });

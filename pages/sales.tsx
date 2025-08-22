@@ -1,7 +1,16 @@
-import { useEffect, useState } from "react"
-import Navbar from "../components/Navbar"
-import { createSale, getProducts, getSales } from "../lib/api"
-import { notifySuccess, notifyError } from "@/lib/notifications"
+import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
+import {
+  createSale,
+  getProducts,
+  getSales,
+  updateSale,
+  deleteSale,
+} from "../lib/api";
+import { notifySuccess, notifyError } from "@/lib/notifications";
+import { Trash2, Edit, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useToast } from "../hooks/use-toast";
 
 export default function Sales() {
   const [products, setProducts] = useState<any[]>([])
@@ -11,8 +20,10 @@ export default function Sales() {
     productoId: 0,
     cantidad: 1,
     formaPago: "CONTADO",
-  })
-  const [loading, setLoading] = useState(false)
+  });
+  const [loading, setLoading] = useState(false);
+  const [editing, setEditing] = useState<any | null>(null);
+  const { toast } = useToast();
 
   const load = async () => {
     try {
@@ -49,12 +60,55 @@ export default function Sales() {
         err?.message && err.message.trim() !== ""
           ? err.message
           : "Ha ocurrido un error al registrar la venta.",
-        "❌ No se pudo registrar la venta"
-      )
+        "❌ No se pudo registrar la venta",
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+  const onUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editing) return;
+    try {
+      await updateSale(editing.id, {
+        ...editing,
+        productoId: Number(editing.productoId),
+        cantidad: Number(editing.cantidad),
+      });
+      setEditing(null);
+      await load();
+      toast({
+        title: "Venta actualizada",
+        description: "La venta se ha actualizado correctamente.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error al actualizar",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const onDelete = async (id: number) => {
+    if (confirm("¿Seguro que deseas eliminar esta venta?")) {
+      try {
+        await deleteSale(id);
+        await load();
+        toast({
+          title: "Venta eliminada",
+          description: "La venta se ha eliminado correctamente.",
+        });
+      } catch (error: any) {
+        toast({
+          title: "Error al eliminar",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    }
+  };
 
   return (
     <>
@@ -138,6 +192,7 @@ export default function Sales() {
                 <th>Total</th>
                 <th>Saldo</th>
                 <th>Estado</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -154,12 +209,120 @@ export default function Sales() {
                   <td>${Number(s.total).toLocaleString()}</td>
                   <td>${Number(s.saldoPendiente).toLocaleString()}</td>
                   <td>{s.status}</td>
+                  <td className="flex gap-2">
+                    <button
+                      onClick={() => setEditing(s)}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      <Edit size={18} />
+                    </button>
+                    <button
+                      onClick={() => onDelete(s.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        <AnimatePresence>
+          {editing && (
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <motion.div
+                className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <button
+                  onClick={() => setEditing(null)}
+                  className="absolute top-2 right-2 text-gray-600 hover:text-black"
+                >
+                  <X size={20} />
+                </button>
+                <h2 className="text-lg font-semibold mb-4">Editar Venta</h2>
+                <form onSubmit={onUpdate} className="grid gap-3">
+                  <div>
+                    <label className="label">Cliente</label>
+                    <input
+                      className="input"
+                      value={editing.cliente}
+                      onChange={(e) =>
+                        setEditing({ ...editing, cliente: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="label">Producto</label>
+                    <select
+                      className="input"
+                      value={editing.productoId}
+                      onChange={(e) =>
+                        setEditing({
+                          ...editing,
+                          productoId: Number(e.target.value),
+                        })
+                      }
+                      required
+                    >
+                      <option value={0}>Seleccione...</option>
+                      {products.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.tipo} - {p.color} - {p.talla} ($
+                          {Number(p.precio).toLocaleString()})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="label">Cantidad</label>
+                    <input
+                      type="number"
+                      className="input"
+                      value={editing.cantidad}
+                      min={1}
+                      onChange={(e) =>
+                        setEditing({
+                          ...editing,
+                          cantidad: e.target.valueAsNumber,
+                        })
+                      }
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="label">Forma de pago</label>
+                    <select
+                      className="input"
+                      value={editing.formaPago}
+                      onChange={(e) =>
+                        setEditing({ ...editing, formaPago: e.target.value })
+                      }
+                    >
+                      <option value="CONTADO">Contado</option>
+                      <option value="CREDITO">Crédito</option>
+                    </select>
+                  </div>
+                  <button className="btn-primary mt-2" type="submit">
+                    Actualizar
+                  </button>
+                </form>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
     </>
-  )
+  );
 }

@@ -8,6 +8,8 @@ import {
 } from "../lib/api";
 import { Trash2, Edit, X, Image as ImageIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useToast } from "../hooks/use-toast";
+import { FileInput } from "../components/ui/file-input";
 
 export default function Inventory() {
   const [items, setItems] = useState<any[]>([]);
@@ -22,6 +24,7 @@ export default function Inventory() {
   const [editing, setEditing] = useState<any | null>(null);
   const [editingFoto, setEditingFoto] = useState<File | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null); // ✅ para modal de foto
+  const { toast } = useToast();
 
   const load = async () => setItems((await getProducts()) as any[]);
   useEffect(() => {
@@ -46,8 +49,20 @@ export default function Inventory() {
 
   const onDelete = async (id: number) => {
     if (confirm("¿Seguro que deseas eliminar este producto?")) {
-      await deleteProduct(id);
-      await load();
+      try {
+        await deleteProduct(id);
+        await load();
+        toast({
+          title: "Producto eliminado",
+          description: "El producto se ha eliminado correctamente.",
+        });
+      } catch (error: any) {
+        toast({
+          title: "Error al eliminar",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -142,14 +157,12 @@ export default function Inventory() {
                 required
               />
             </div>
-            <div>
-              <label className="label">Foto</label>
-              <input
-                type="file"
-                className="input"
-                onChange={(e) => setFoto(e.target.files ? e.target.files[0] : null)}
-              />
-            </div>
+            <FileInput
+              label="Foto"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setFoto(e.target.files ? e.target.files[0] : null)
+              }
+            />
             <button className="btn-primary" type="submit">
               Guardar
             </button>
@@ -310,16 +323,12 @@ export default function Inventory() {
                       required
                     />
                   </div>
-                  <div>
-                    <label className="label">Foto</label>
-                    <input
-                      type="file"
-                      className="input"
-                      onChange={(e) =>
-                        setEditingFoto(e.target.files ? e.target.files[0] : null)
-                      }
-                    />
-                  </div>
+                  <FileInput
+                    label="Foto"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setEditingFoto(e.target.files ? e.target.files[0] : null)
+                    }
+                  />
                   <button className="btn-primary mt-2" type="submit">
                     Actualizar
                   </button>
