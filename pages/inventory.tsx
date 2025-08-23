@@ -1,4 +1,3 @@
-// Importa los módulos necesarios de React, Next.js y otras bibliotecas.
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import {
@@ -6,17 +5,23 @@ import {
   getProducts,
   updateProduct,
   deleteProduct,
+  getTipos,
+  getColors,
 } from "../lib/api";
 import { Trash2, Edit, X, Image as ImageIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "../hooks/use-toast";
 import { FileInput } from "../components/ui/file-input";
 
+// Define el componente de la página de inventario.
 export default function Inventory() {
+  // Define los estados para los productos, el formulario, la foto, etc.
   const [items, setItems] = useState<any[]>([]);
+  const [tipos, setTipos] = useState<any[]>([]);
+  const [colors, setColors] = useState<any[]>([]);
   const [form, setForm] = useState({
-    tipo: "",
-    color: "",
+    tipoId: 0,
+    colorId: 0,
     talla: "",
     cantidad: 0,
     precio: 0,
@@ -27,11 +32,17 @@ export default function Inventory() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null); // ✅ para modal de foto
   const { toast } = useToast();
 
-  const load = async () => setItems((await getProducts()) as any[]);
+  // Carga los productos desde la API.
+  const load = async () => {
+    setItems((await getProducts()) as any[]);
+    setTipos((await getTipos()) as any[]);
+    setColors((await getColors()) as any[]);
+  };
   useEffect(() => {
     load();
   }, []);
 
+  // Maneja el envío del formulario para crear un nuevo producto.
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
@@ -43,11 +54,12 @@ export default function Inventory() {
     }
 
     await createProduct(formData);
-    setForm({ tipo: "", color: "", talla: "", cantidad: 0, precio: 0 });
+    setForm({ tipoId: 0, colorId: 0, talla: "", cantidad: 0, precio: 0 });
     setFoto(null);
     await load();
   };
 
+  // Maneja la eliminación de un producto.
   const onDelete = async (id: number) => {
     if (confirm("¿Seguro que deseas eliminar este producto?")) {
       try {
@@ -67,6 +79,7 @@ export default function Inventory() {
     }
   };
 
+  // Maneja la actualización de un producto.
   const onUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editing) return;
@@ -101,21 +114,39 @@ export default function Inventory() {
           >
             <div>
               <label className="label">Tipo</label>
-              <input
+              <select
                 className="input"
-                value={form.tipo}
-                onChange={(e) => setForm({ ...form, tipo: e.target.value })}
+                value={form.tipoId}
+                onChange={(e) =>
+                  setForm({ ...form, tipoId: Number(e.target.value) })
+                }
                 required
-              />
+              >
+                <option value={0}>Seleccione...</option>
+                {tipos.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="label">Color</label>
-              <input
+              <select
                 className="input"
-                value={form.color}
-                onChange={(e) => setForm({ ...form, color: e.target.value })}
+                value={form.colorId}
+                onChange={(e) =>
+                  setForm({ ...form, colorId: Number(e.target.value) })
+                }
                 required
-              />
+              >
+                <option value={0}>Seleccione...</option>
+                {colors.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="label">Talla</label>
@@ -190,8 +221,8 @@ export default function Inventory() {
               {items.map((p) => (
                 <tr key={p.id} className="border-t">
                   <td className="py-2">{p.id}</td>
-                  <td>{p.tipo}</td>
-                  <td>{p.color}</td>
+                  <td>{p.tipo.nombre}</td>
+                  <td>{p.color.nombre}</td>
                   <td>{p.talla}</td>
                   <td>{p.cantidad}</td>
                   <td>${Number(p.precio).toLocaleString()}</td>
@@ -255,25 +286,42 @@ export default function Inventory() {
                 <form onSubmit={onUpdate} className="grid gap-3">
                   <div>
                     <label className="label">Tipo</label>
-                    <input
+                    <select
                       className="input"
-                      value={editing.tipo}
+                      value={editing.tipoId}
                       onChange={(e) =>
-                        setEditing({ ...editing, tipo: e.target.value })
+                        setEditing({ ...editing, tipoId: Number(e.target.value) })
                       }
                       required
-                    />
+                    >
+                      <option value={0}>Seleccione...</option>
+                      {tipos.map((t) => (
+                        <option key={t.id} value={t.id}>
+                          {t.nombre}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <label className="label">Color</label>
-                    <input
+                    <select
                       className="input"
-                      value={editing.color}
+                      value={editing.colorId}
                       onChange={(e) =>
-                        setEditing({ ...editing, color: e.target.value })
+                        setEditing({
+                          ...editing,
+                          colorId: Number(e.target.value),
+                        })
                       }
                       required
-                    />
+                    >
+                      <option value={0}>Seleccione...</option>
+                      {colors.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.nombre}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <label className="label">Talla</label>

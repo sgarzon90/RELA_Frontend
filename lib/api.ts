@@ -92,3 +92,19 @@ export const updateUser = (id: number, data: any) =>
   http(`/users/${id}`, { method: "PATCH", body: JSON.stringify(data) });
 export const deleteUser = (id: number) =>
   http(`/users/${id}`, { method: "DELETE" });
+
+// --- Endpoints de Atributos ---
+export const getTipos = () => http("/attributes/tipo");
+export const createTipo = (data: any) =>
+  http("/attributes/tipo", { method: "POST", body: JSON.stringify(data) });
+export const deleteTipo = (id: number) =>
+  http(`/attributes/tipo/${id}`, { method: "DELETE" });
+export const updateTipo = (id: number, data: any) =>
+  http(`/attributes/tipo/${id}`, { method: "PATCH", body: JSON.stringify(data) });
+export const getColors = () => http("/attributes/color");
+export const createColor = (data: any) =>
+  http("/attributes/color", { method: "POST", body: JSON.stringify(data) });
+export const deleteColor = (id: number) =>
+  http(`/attributes/color/${id}`, { method: "DELETE" });
+export const updateColor = (id: number, data: any) =>
+  http(`/attributes/color/${id}`, { method: "PATCH", body: JSON.stringify(data) });

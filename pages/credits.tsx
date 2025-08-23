@@ -52,7 +52,7 @@ export default function Credits() {
                 <tr key={s.id} className="border-t">
                   <td className="py-2">#{s.id}</td>
                   <td>{s.cliente}</td>
-                  <td>{s.producto?.tipo} {s.producto?.color} {s.producto?.talla}</td>
+                  <td>{s.producto?.tipo?.nombre} {s.producto?.color?.nombre} {s.producto?.talla}</td>
                   <td>${Number(s.total).toLocaleString()}</td>
                   <td>${Number(s.saldoPendiente).toLocaleString()}</td>
                   <td>

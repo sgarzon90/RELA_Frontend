@@ -1,4 +1,3 @@
-// Importa los módulos necesarios de React, Next.js y otras bibliotecas.
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import {
@@ -13,9 +12,11 @@ import { Trash2, Edit, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "../hooks/use-toast";
 
+// Define el componente de la página de ventas.
 export default function Sales() {
-  const [products, setProducts] = useState<any[]>([])
-  const [sales, setSales] = useState<any[]>([])
+  // Define los estados para productos, ventas, formulario, etc.
+  const [products, setProducts] = useState<any[]>([]);
+  const [sales, setSales] = useState<any[]>([]);
   const [form, setForm] = useState({
     cliente: "",
     productoId: 0,
@@ -26,37 +27,37 @@ export default function Sales() {
   const [editing, setEditing] = useState<any | null>(null);
   const { toast } = useToast();
 
+  // Carga los productos y las ventas desde la API.
   const load = async () => {
     try {
-      setProducts((await getProducts()) as any[])
-      setSales((await getSales()) as any[])
+      setProducts((await getProducts()) as any[]);
+      setSales((await getSales()) as any[]);
     } catch (err) {
-      console.error("Error cargando datos:", err)
-      notifyError("No se pudieron cargar los productos o ventas.", "Error al cargar datos")
+      console.error("Error cargando datos:", err);
+      notifyError("No se pudieron cargar los productos o ventas.", "Error al cargar datos");
     }
-  }
+  };
 
+  // Carga los datos cuando el componente se monta.
   useEffect(() => {
-    load()
-  }, [])
+    load();
+  }, []);
 
+  // Maneja el envío del formulario para crear una nueva venta.
   const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
     try {
       await createSale({
         ...form,
         productoId: Number(form.productoId),
         cantidad: Number(form.cantidad),
-      })
-
-      notifySuccess("La venta fue guardada correctamente.", "✅ Venta registrada")
-
-      setForm({ cliente: "", productoId: 0, cantidad: 1, formaPago: "CONTADO" })
-      await load()
+      });
+      notifySuccess("La venta fue guardada correctamente.", "✅ Venta registrada");
+      setForm({ cliente: "", productoId: 0, cantidad: 1, formaPago: "CONTADO" });
+      await load();
     } catch (err: any) {
-      console.error("Error en createSale:", err)
-
+      console.error("Error en createSale:", err);
       notifyError(
         err?.message && err.message.trim() !== ""
           ? err.message
@@ -68,6 +69,7 @@ export default function Sales() {
     }
   };
 
+  // Maneja la actualización de una venta.
   const onUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editing) return;
@@ -92,6 +94,7 @@ export default function Sales() {
     }
   };
 
+  // Maneja la eliminación de una venta.
   const onDelete = async (id: number) => {
     if (confirm("¿Seguro que deseas eliminar esta venta?")) {
       try {
@@ -143,7 +146,7 @@ export default function Sales() {
                 <option value={0}>Seleccione...</option>
                 {products.map((p) => (
                   <option key={p.id} value={p.id}>
-                    {p.tipo} - {p.color} - {p.talla} ($
+                    {p.tipo.nombre} - {p.color.nombre} - {p.talla} ($
                     {Number(p.precio).toLocaleString()})
                   </option>
                 ))}
@@ -202,7 +205,7 @@ export default function Sales() {
                   <td className="py-2">{s.id}</td>
                   <td>{s.cliente}</td>
                   <td>
-                    {s.producto?.tipo} {s.producto?.color} {s.producto?.talla}
+                    {s.producto?.tipo?.nombre} {s.producto?.color?.nombre} {s.producto?.talla}
                   </td>
                   <td>{s.cantidad}</td>
                   <td>{new Date(s.fecha).toLocaleString()}</td>
@@ -280,7 +283,7 @@ export default function Sales() {
                       <option value={0}>Seleccione...</option>
                       {products.map((p) => (
                         <option key={p.id} value={p.id}>
-                          {p.tipo} - {p.color} - {p.talla} ($
+                          {p.tipo.nombre} - {p.color.nombre} - {p.talla} ($
                           {Number(p.precio).toLocaleString()})
                         </option>
                       ))}

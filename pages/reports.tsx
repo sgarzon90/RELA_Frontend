@@ -63,7 +63,7 @@ export default function Reports() {
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={topSellingProducts}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="tipo" />
+              <XAxis dataKey="nombre" />
               <YAxis />
               <Tooltip />
               <Legend />

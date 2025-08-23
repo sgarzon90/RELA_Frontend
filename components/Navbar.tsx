@@ -50,6 +50,7 @@ export default function Navbar() {
           <Link href="/reports">Reportes</Link>
           {/* Muestra el enlace de Usuarios solo si el usuario tiene el rol de 'master'. */}
           {user && user.role === 'master' && <Link href="/users">Usuarios</Link>}
+          {user && user.role === 'master' && <Link href="/attributes">Atributos</Link>}
         </div>
         {/* Botón de cierre de sesión */}
         <button onClick={handleLogout} className="text-red-500 hover:text-red-700">
