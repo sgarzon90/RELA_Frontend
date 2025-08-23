@@ -1,3 +1,4 @@
+// Importa los módulos necesarios de React, Next.js y otras bibliotecas.
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import {

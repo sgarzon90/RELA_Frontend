@@ -1,5 +1,7 @@
+// Importa la función `toast` del hook `use-toast`.
 import { toast } from "@/hooks/use-toast"
 
+// Muestra una notificación de éxito.
 export const notifySuccess = (
   message: string,
   title: string = "Éxito",
@@ -12,6 +14,7 @@ export const notifySuccess = (
   })
 }
 
+// Muestra una notificación de error.
 export const notifyError = (
   message: string,
   title: string = "Error",
@@ -25,6 +28,7 @@ export const notifyError = (
   })
 }
 
+// Muestra una notificación de información.
 export const notifyInfo = (
   message: string,
   title: string = "Información",

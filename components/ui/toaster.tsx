@@ -1,3 +1,4 @@
+// Importa los módulos necesarios.
 import { useToast } from "@/hooks/use-toast";
 import {
   Toast,
@@ -8,19 +9,20 @@ import {
   ToastViewport,
 } from "@/components/ui/toast";
 
-// Tipos extendidos para props
+// Define los tipos para las propiedades del Toaster.
 type ToasterProps = {
   position?: "top-right" | "top-center" | "bottom-right";
-  duration?: number; // duración global por defecto
+  duration?: number; // Duración global por defecto.
 };
 
+// Define el componente Toaster, que muestra las notificaciones.
 export function Toaster({
   position = "bottom-right",
   duration = 3000,
 }: ToasterProps) {
   const { toasts } = useToast();
 
-  // definimos las posiciones posibles
+  // Define las clases de CSS para las diferentes posiciones del Toaster.
   const positions: Record<string, string> = {
     "top-right": "fixed top-0 right-0 flex flex-col p-4 gap-2 z-[100]",
     "top-center":
@@ -28,6 +30,7 @@ export function Toaster({
     "bottom-right": "fixed bottom-0 right-0 flex flex-col p-4 gap-2 z-[100]",
   };
 
+  // Renderiza el proveedor de notificaciones y las notificaciones.
   return (
     <ToastProvider>
       {toasts.map(function ({
@@ -42,7 +45,7 @@ export function Toaster({
           <Toast
             key={id}
             {...props}
-            duration={toastDuration ?? duration} // usa el duration global si no se pasa uno específico
+            duration={toastDuration ?? duration} // Usa la duración específica de la notificación o la global.
           >
             <div className="grid gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
@@ -51,13 +54,12 @@ export function Toaster({
               )}
             </div>
             {action}
-            {/* X de cierre visible */}
             <ToastClose className="text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-300" />
           </Toast>
         );
       })}
 
-      {/* viewport con la clase según la posición */}
+      {/* Renderiza el contenedor de notificaciones con la clase de posición correspondiente. */}
       <ToastViewport className={positions[position]} />
     </ToastProvider>
   );
