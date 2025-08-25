@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://your-backend-url.vercel.app/:path*"
+      "destination": "https://rela-backend.vercel.app/:path*"
     }
   ]
 }
