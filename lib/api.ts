@@ -1,5 +1,5 @@
 // Define la URL base de la API, obteniéndola de las variables de entorno o usando un valor por defecto.
-const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+const BASE = process.env.NEXT_PUBLIC_API_URL || "/api";
 
 // Función genérica para realizar solicitudes HTTP a la API.
 async function http(url: string, opts?: RequestInit) {
