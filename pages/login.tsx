@@ -36,11 +36,11 @@ export default function Login() {
 
   // Renderiza el formulario de inicio de sesión.
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg dark:bg-gray-800">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800">Bienvenido</h1>
-          <p className="text-gray-500 mt-2">Inicia sesión para continuar</p>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Bienvenido</h1>
+          <p className="text-gray-500 mt-2 dark:text-gray-400">Inicia sesión para continuar</p>
         </div>
         <form onSubmit={onSubmit} className="space-y-6">
           <div>

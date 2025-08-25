@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar';
 import { createPayment, getSales } from '../lib/api';
 import CreditsTable from '@/components/credits/CreditsTable';
 
@@ -25,7 +24,6 @@ export default function Credits() {
 
   return (
     <>
-      <Navbar />
       <div className="container mx-auto px-4 py-8">
         <CreditsTable
           pending={pending}

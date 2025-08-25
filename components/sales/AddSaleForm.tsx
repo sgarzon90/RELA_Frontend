@@ -1,3 +1,5 @@
+import Select from '../ui/select';
+
 interface AddSaleFormProps {
   form: any;
   setForm: (form: any) => void;
@@ -14,7 +16,7 @@ export default function AddSaleForm({
   loading,
 }: AddSaleFormProps) {
   return (
-    <div className="bg-white shadow rounded-lg p-6 mb-8">
+    <div className="bg-white shadow rounded-lg p-6 mb-8 dark:bg-gray-800">
       <h2 className="text-xl font-semibold mb-4">Registrar Venta</h2>
       <form
         onSubmit={onSubmit}
@@ -31,8 +33,7 @@ export default function AddSaleForm({
         </div>
         <div className="lg:col-span-1">
           <label className="label">Producto</label>
-          <select
-            className="input"
+          <Select
             value={form.productoId}
             onChange={(e) =>
               setForm({ ...form, productoId: Number(e.target.value) })
@@ -46,7 +47,7 @@ export default function AddSaleForm({
                 {Number(p.precio).toLocaleString()})
               </option>
             ))}
-          </select>
+          </Select>
         </div>
         <div>
           <label className="label">Cantidad</label>
@@ -63,14 +64,13 @@ export default function AddSaleForm({
         </div>
         <div>
           <label className="label">Forma de pago</label>
-          <select
-            className="input"
+          <Select
             value={form.formaPago}
             onChange={(e) => setForm({ ...form, formaPago: e.target.value })}
           >
             <option value="CONTADO">Contado</option>
             <option value="CREDITO">Crédito</option>
-          </select>
+          </Select>
         </div>
         <div className="md:col-span-2 lg:col-span-4 flex justify-end">
           <button className="btn-primary w-full md:w-auto" type="submit" disabled={loading}>

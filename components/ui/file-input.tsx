@@ -21,7 +21,7 @@ export function FileInput({
       {/* Botón que activa el clic en el campo de entrada de archivo oculto. */}
       <button
         type="button"
-        className="p-2 rounded-md hover:bg-gray-100"
+        className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
         onClick={() => inputRef.current?.click()}
       >
         <Upload size={20} />

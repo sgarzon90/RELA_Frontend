@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import {
   createSale,
   getProducts,
@@ -110,7 +109,6 @@ export default function Sales() {
 
   return (
     <>
-      <Navbar />
       <div className="container mx-auto px-4 py-8">
         <AddSaleForm
           form={form}

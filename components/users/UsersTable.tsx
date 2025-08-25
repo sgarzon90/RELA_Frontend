@@ -8,20 +8,20 @@ interface UsersTableProps {
 
 export default function UsersTable({ users, onEdit, onDelete }: UsersTableProps) {
   return (
-    <div className="bg-white shadow rounded-lg overflow-hidden">
+    <div className="bg-white shadow rounded-lg overflow-hidden dark:bg-gray-800">
       <h2 className="text-xl font-semibold p-6">Usuarios</h2>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50">
-            <tr className="text-left text-gray-600">
+          <thead className="bg-gray-50 dark:bg-gray-700">
+            <tr className="text-left text-gray-600 dark:text-gray-300">
               <th className="py-3 px-6 font-medium">ID</th>
               <th className="py-3 px-6 font-medium">Email</th>
               <th className="py-3 px-6 font-medium">Acciones</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {users.map((u) => (
-              <tr key={u.id} className="hover:bg-gray-50 transition-colors">
+              <tr key={u.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <td className="py-4 px-6">{u.id}</td>
                 <td className="py-4 px-6">{u.email}</td>
                 <td className="py-4 px-6 flex gap-4">

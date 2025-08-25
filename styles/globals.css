@@ -10,7 +10,7 @@ body {
 
 /* Estilo para los componentes de tarjeta. */
 .card {
-    @apply bg-white rounded-2xl shadow p-6;
+    @apply bg-white rounded-2xl shadow p-6 dark:bg-gray-800;
 }
 
 /* Estilo base para los botones. */
@@ -25,12 +25,12 @@ body {
 
 /* Estilo para los campos de entrada. */
 .input {
-    @apply border rounded-xl px-3 py-2 w-full;
+    @apply border rounded-xl px-3 py-2 w-full bg-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white;
 }
 
 /* Estilo para las etiquetas. */
 .label {
-    @apply text-sm font-medium;
+    @apply text-sm font-medium text-gray-700 dark:text-gray-300;
 }
 
 /* Define las variables de color para los temas claro y oscuro. */

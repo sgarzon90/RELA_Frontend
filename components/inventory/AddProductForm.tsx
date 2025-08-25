@@ -1,4 +1,5 @@
 import { FileInput } from '../ui/file-input';
+import Select from '../ui/select';
 
 interface AddProductFormProps {
   form: any;
@@ -18,7 +19,7 @@ export default function AddProductForm({
   setFoto,
 }: AddProductFormProps) {
   return (
-    <div className="bg-white shadow rounded-lg p-6 mb-8">
+    <div className="bg-white shadow rounded-lg p-6 mb-8 dark:bg-gray-800">
       <h2 className="text-xl font-semibold mb-4">Agregar Producto</h2>
       <form
         onSubmit={onSubmit}
@@ -26,8 +27,7 @@ export default function AddProductForm({
       >
         <div className="lg:col-span-1">
           <label className="label">Tipo</label>
-          <select
-            className="input"
+          <Select
             value={form.tipoId}
             onChange={(e) =>
               setForm({ ...form, tipoId: Number(e.target.value) })
@@ -40,12 +40,11 @@ export default function AddProductForm({
                 {t.nombre}
               </option>
             ))}
-          </select>
+          </Select>
         </div>
         <div>
           <label className="label">Color</label>
-          <select
-            className="input"
+          <Select
             value={form.colorId}
             onChange={(e) =>
               setForm({ ...form, colorId: Number(e.target.value) })
@@ -58,12 +57,11 @@ export default function AddProductForm({
                 {c.nombre}
               </option>
             ))}
-          </select>
+          </Select>
         </div>
         <div>
           <label className="label">Talla</label>
-          <select
-            className="input"
+          <Select
             value={form.talla}
             onChange={(e) => setForm({ ...form, talla: e.target.value })}
             required
@@ -74,7 +72,7 @@ export default function AddProductForm({
             <option value="M">M</option>
             <option value="L">L</option>
             <option value="XL">XL</option>
-          </select>
+          </Select>
         </div>
         <div>
           <label className="label">Cantidad</label>

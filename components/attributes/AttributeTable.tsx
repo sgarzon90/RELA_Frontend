@@ -13,9 +13,9 @@ export default function AttributeTable({
 }: AttributeTableProps) {
   return (
     <table className="w-full text-sm mt-4">
-      <tbody className="divide-y divide-gray-200">
+      <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
         {items.map((item) => (
-          <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+          <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <td className="py-3 px-4">{item.nombre}</td>
             <td className="py-3 px-4 text-right">
               <div className="flex gap-4 justify-end">

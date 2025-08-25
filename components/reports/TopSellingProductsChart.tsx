@@ -17,7 +17,7 @@ export default function TopSellingProductsChart({
   data,
 }: TopSellingProductsChartProps) {
   return (
-    <div className="bg-white shadow rounded-lg p-6">
+    <div className="bg-white shadow rounded-lg p-6 dark:bg-gray-800">
       <h2 className="text-xl font-semibold mb-4">Productos Más Vendidos</h2>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data}>

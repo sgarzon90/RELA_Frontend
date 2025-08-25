@@ -20,21 +20,21 @@ export default function CreditsTable({
   );
 
   return (
-    <div className="bg-white shadow rounded-lg overflow-hidden">
+    <div className="bg-white shadow rounded-lg overflow-hidden dark:bg-gray-800">
       <div className="p-6 flex justify-between items-center">
         <h2 className="text-xl font-semibold">Créditos Pendientes</h2>
         <input
           type="text"
           placeholder="Buscar por cliente..."
-          className="border rounded-xl px-3 py-2 w-64"
+          className="border rounded-xl px-3 py-2 w-64 bg-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50">
-            <tr className="text-left text-gray-600">
+          <thead className="bg-gray-50 dark:bg-gray-700">
+            <tr className="text-left text-gray-600 dark:text-gray-300">
               <th className="py-3 px-6 font-medium">Venta</th>
               <th className="py-3 px-6 font-medium">Cliente</th>
               <th className="py-3 px-6 font-medium">Producto</th>
@@ -44,9 +44,9 @@ export default function CreditsTable({
               <th className="py-3 px-6 font-medium"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {filteredPending.map((s) => (
-              <tr key={s.id} className="hover:bg-gray-50 transition-colors">
+              <tr key={s.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <td className="py-4 px-6">#{s.id}</td>
                 <td className="py-4 px-6">{s.cliente}</td>
                 <td className="py-4 px-6">

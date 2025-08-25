@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import {
   createProduct,
   getProducts,
@@ -101,7 +100,6 @@ export default function Inventory() {
 
   return (
     <>
-      <Navbar />
       <div className="container mx-auto px-4 py-8">
         <Header title="Inventario" onAddClick={() => setShowAddForm(!showAddForm)} />
         {showAddForm && (

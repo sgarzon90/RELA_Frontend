@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import { getUsers, createUser, updateUser, deleteUser } from "../lib/api";
 import { useToast } from "../hooks/use-toast";
 import AddUserForm from "@/components/users/AddUserForm";
@@ -53,7 +52,6 @@ export default function Users() {
 
   return (
     <>
-      <Navbar />
       <div className="container mx-auto px-4 py-8">
         <AddUserForm
           form={form}

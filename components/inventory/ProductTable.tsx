@@ -19,21 +19,21 @@ export default function ProductTable({ items, onEdit, onDelete, onViewImage }: P
   );
 
   return (
-    <div className="bg-white shadow rounded-lg overflow-hidden">
+    <div className="bg-white shadow rounded-lg overflow-hidden dark:bg-gray-800">
       <div className="p-6 flex justify-between items-center">
         <h2 className="text-xl font-semibold">Inventario</h2>
         <input
           type="text"
           placeholder="Buscar..."
-          className="border rounded-xl px-3 py-2 w-64"
+          className="border rounded-xl px-3 py-2 w-64 bg-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50">
-            <tr className="text-left text-gray-600">
+          <thead className="bg-gray-50 dark:bg-gray-700">
+            <tr className="text-left text-gray-600 dark:text-gray-300">
               <th className="py-3 px-6 font-medium">ID</th>
               <th className="py-3 px-6 font-medium">Tipo</th>
               <th className="py-3 px-6 font-medium">Color</th>
@@ -44,9 +44,9 @@ export default function ProductTable({ items, onEdit, onDelete, onViewImage }: P
               <th className="py-3 px-6 font-medium">Acciones</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {filteredItems.map((p) => (
-              <tr key={p.id} className="hover:bg-gray-50 transition-colors">
+              <tr key={p.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <td className="py-4 px-6">{p.id}</td>
                 <td className="py-4 px-6">{p.tipo.nombre}</td>
                 <td className="py-4 px-6">{p.color.nombre}</td>

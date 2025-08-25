@@ -35,7 +35,7 @@ export default function ProductModals({
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative"
+              className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative dark:bg-gray-800"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}

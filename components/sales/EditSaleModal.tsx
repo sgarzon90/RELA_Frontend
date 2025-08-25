@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import Select from '../ui/select';
 
 interface EditSaleModalProps {
   editing: any;
@@ -24,7 +25,7 @@ export default function EditSaleModal({
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative"
+            className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative dark:bg-gray-800"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
@@ -51,8 +52,7 @@ export default function EditSaleModal({
               </div>
               <div>
                 <label className="label">Producto</label>
-                <select
-                  className="input"
+                <Select
                   value={editing.productoId}
                   onChange={(e) =>
                     setEditing({
@@ -69,7 +69,7 @@ export default function EditSaleModal({
                       {Number(p.precio).toLocaleString()})
                     </option>
                   ))}
-                </select>
+                </Select>
               </div>
               <div>
                 <label className="label">Cantidad</label>
@@ -89,8 +89,7 @@ export default function EditSaleModal({
               </div>
               <div>
                 <label className="label">Forma de pago</label>
-                <select
-                  className="input"
+                <Select
                   value={editing.formaPago}
                   onChange={(e) =>
                     setEditing({ ...editing, formaPago: e.target.value })
@@ -98,7 +97,7 @@ export default function EditSaleModal({
                 >
                   <option value="CONTADO">Contado</option>
                   <option value="CREDITO">Crédito</option>
-                </select>
+                </Select>
               </div>
               <button className="btn-primary mt-2" type="submit">
                 Actualizar

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import {
   createTipo,
   getTipos,
@@ -98,10 +97,9 @@ export default function Attributes() {
 
   return (
     <>
-      <Navbar />
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white shadow rounded-lg p-6">
+          <div className="bg-white shadow rounded-lg p-6 dark:bg-gray-800">
             <h2 className="text-xl font-semibold mb-4">Tipos de Producto</h2>
             <AttributeForm
               value={tipo}
@@ -115,7 +113,7 @@ export default function Attributes() {
               onDelete={onDeleteTipo}
             />
           </div>
-          <div className="bg-white shadow rounded-lg p-6">
+          <div className="bg-white shadow rounded-lg p-6 dark:bg-gray-800">
             <h2 className="text-xl font-semibold mb-4">Colores</h2>
             <AttributeForm
               value={color}

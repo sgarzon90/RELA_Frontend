@@ -3,6 +3,8 @@ import Link from 'next/link'; // Para la navegación entre páginas.
 import { useRouter } from 'next/router'; // Para manejar el enrutamiento.
 import { useEffect, useState } from 'react'; // Hooks de React para manejar el estado y los efectos secundarios.
 import { jwtDecode } from 'jwt-decode'; // Para decodificar los tokens JWT.
+import { useTheme } from '@/components/ThemeProvider';
+import { Moon, Sun } from 'lucide-react';
 
 // Define la interfaz para el objeto de usuario.
 interface User {
@@ -19,6 +21,7 @@ export default function Navbar() {
   // Define el estado para el usuario, inicializado como nulo.
   const [user, setUser] = useState<User | null>(null);
   const pathname = router.pathname; // Obtiene la ruta actual.
+  const { theme, setTheme } = useTheme();
 
   // Hook de efecto que se ejecuta una vez que el componente se monta.
   useEffect(() => {
@@ -50,12 +53,12 @@ export default function Navbar() {
 
   // Renderiza la barra de navegación.
   return (
-    <nav className="bg-white border-b border-gray-200 shadow-sm">
+    <nav className="bg-white border-b border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-4">
             {/* Logo o nombre de la tienda */}
-            <Link href="/" className="text-lg font-bold text-gray-800">
+            <Link href="/" className="text-lg font-bold text-gray-800 dark:text-white">
               RELA STORE
             </Link>
             {/* Enlaces de navegación */}
@@ -86,7 +89,13 @@ export default function Navbar() {
           </div>
           <div className="flex items-center gap-4">
             {/* Mensaje de bienvenida y botón de cierre de sesión */}
-            {user && <span className="text-gray-600 text-sm">Hola, {user.email}</span>}
+            {user && <span className="text-gray-600 text-sm dark:text-gray-300">Hola, {user.email}</span>}
+            <button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+            >
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 text-red-500 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-red-50"

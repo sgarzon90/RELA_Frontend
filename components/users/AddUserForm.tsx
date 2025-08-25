@@ -10,7 +10,7 @@ export default function AddUserForm({
   onSubmit,
 }: AddUserFormProps) {
   return (
-    <div className="bg-white shadow rounded-lg p-6 mb-8">
+    <div className="bg-white shadow rounded-lg p-6 mb-8 dark:bg-gray-800">
       <h2 className="text-xl font-semibold mb-4">Agregar Usuario</h2>
       <form
         onSubmit={onSubmit}

@@ -1,12 +1,7 @@
-// Importa el componente de la barra de navegación.
-import Navbar from '../components/Navbar';
-
 // Define el componente de la página de inicio.
 export default function Home() { 
   return (
     <>
-      {/* Renderiza el componente de la barra de navegación. */}
-      <Navbar />
       {/* Contenido principal de la página. */}
       <main className="max-w-5xl mx-auto px-4">
         <div className="card">
