@@ -1,4 +1,5 @@
 // Importa los módulos necesarios de Next.js y otras bibliotecas.
+import Image from 'next/image';
 import Link from 'next/link'; // Para la navegación entre páginas.
 import { useRouter } from 'next/router'; // Para manejar el enrutamiento.
 import { useEffect, useState } from 'react'; // Hooks de React para manejar el estado y los efectos secundarios.
@@ -58,8 +59,13 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-4">
             {/* Logo o nombre de la tienda */}
-            <Link href="/" className="text-lg font-bold text-gray-800 dark:text-white">
-              RELA STORE
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/images/RELA.png"
+                alt="RELA Logo"
+                width={100}
+                height={40}
+              />
             </Link>
             {/* Enlaces de navegación */}
             <div className="hidden md:flex md:items-center md:space-x-4">

@@ -1,4 +1,5 @@
 // Importa los módulos necesarios de React, Next.js y otras bibliotecas.
+import Image from "next/image";
 import { useState } from "react"; // Hook de React para manejar el estado.
 import { useRouter } from "next/router"; // Hook de Next.js para manejar el enrutamiento.
 import { login } from "../lib/api"; // Función para realizar la solicitud de inicio de sesión a la API.
@@ -39,8 +40,19 @@ export default function Login() {
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg dark:bg-gray-800">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Bienvenido</h1>
-          <p className="text-gray-500 mt-2 dark:text-gray-400">Inicia sesión para continuar</p>
+          <Image
+            src="/images/RELA.png"
+            alt="RELA Logo"
+            width={150}
+            height={150}
+            className="mx-auto"
+          />
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white mt-4">
+            Bienvenido
+          </h1>
+          <p className="text-gray-500 mt-2 dark:text-gray-400">
+            Inicia sesión para continuar
+          </p>
         </div>
         <form onSubmit={onSubmit} className="space-y-6">
           <div>
