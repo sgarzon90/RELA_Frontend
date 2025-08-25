@@ -36,32 +36,37 @@ export default function Login() {
 
   // Renderiza el formulario de inicio de sesión.
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center">Iniciar Sesión</h1>
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-800">Bienvenido</h1>
+          <p className="text-gray-500 mt-2">Inicia sesión para continuar</p>
+        </div>
         <form onSubmit={onSubmit} className="space-y-6">
           <div>
-            <label className="label">Email</label>
+            <label className="label">Correo Electrónico</label>
             <input
               type="email"
               className="input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="tu@correo.com"
               required
             />
           </div>
           <div>
-            <label className="label">Password</label>
+            <label className="label">Contraseña</label>
             <input
               type="password"
               className="input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
               required
             />
           </div>
           <button className="w-full btn-primary" type="submit">
-            Iniciar sesión
+            Iniciar Sesión
           </button>
         </form>
       </div>

@@ -10,9 +10,10 @@ import {
   deleteColor,
   updateColor,
 } from "../lib/api";
-import { Trash2, Edit, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "../hooks/use-toast";
+import AttributeForm from "@/components/attributes/AttributeForm";
+import AttributeTable from "@/components/attributes/AttributeTable";
+import EditAttributeModal from "@/components/attributes/EditAttributeModal";
 
 export default function Attributes() {
   const [tipos, setTipos] = useState<any[]>([]);
@@ -83,143 +84,58 @@ export default function Attributes() {
     }
   };
 
+  const onUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editing) return;
+    if (editing.type === "tipo") {
+      await updateTipo(editing.id, { nombre: editing.nombre });
+    } else {
+      await updateColor(editing.id, { nombre: editing.nombre });
+    }
+    setEditing(null);
+    await load();
+  };
+
   return (
     <>
       <Navbar />
-      <main className="max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-6">
-        <div className="card">
-          <h2 className="text-xl font-semibold mb-4">Tipos de producto</h2>
-          <form onSubmit={onAddTipo} className="flex gap-2">
-            <input
-              className="input"
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-white shadow rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Tipos de Producto</h2>
+            <AttributeForm
               value={tipo}
-              onChange={(e) => setTipo(e.target.value)}
+              setValue={setTipo}
+              onSubmit={onAddTipo}
               placeholder="Nuevo tipo"
-              required
             />
-            <button className="btn-primary" type="submit">
-              Agregar
-            </button>
-          </form>
-          <table className="w-full text-sm mt-4">
-            <tbody>
-              {tipos.map((t) => (
-                <tr key={t.id} className="border-t">
-                  <td className="py-2">{t.nombre}</td>
-                  <td className="text-right flex gap-2 justify-end">
-                    <button
-                      onClick={() => setEditing({ ...t, type: "tipo" })}
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      <Edit size={18} />
-                    </button>
-                    <button
-                      onClick={() => onDeleteTipo(t.id)}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="card">
-          <h2 className="text-xl font-semibold mb-4">Colores</h2>
-          <form onSubmit={onAddColor} className="flex gap-2">
-            <input
-              className="input"
+            <AttributeTable
+              items={tipos}
+              onEdit={(item) => setEditing({ ...item, type: "tipo" })}
+              onDelete={onDeleteTipo}
+            />
+          </div>
+          <div className="bg-white shadow rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Colores</h2>
+            <AttributeForm
               value={color}
-              onChange={(e) => setColor(e.target.value)}
+              setValue={setColor}
+              onSubmit={onAddColor}
               placeholder="Nuevo color"
-              required
             />
-            <button className="btn-primary" type="submit">
-              Agregar
-            </button>
-          </form>
-          <table className="w-full text-sm mt-4">
-            <tbody>
-              {colors.map((c) => (
-                <tr key={c.id} className="border-t">
-                  <td className="py-2">{c.nombre}</td>
-                  <td className="text-right flex gap-2 justify-end">
-                    <button
-                      onClick={() => setEditing({ ...c, type: "color" })}
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      <Edit size={18} />
-                    </button>
-                    <button
-                      onClick={() => onDeleteColor(c.id)}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            <AttributeTable
+              items={colors}
+              onEdit={(item) => setEditing({ ...item, type: "color" })}
+              onDelete={onDeleteColor}
+            />
+          </div>
         </div>
-        <AnimatePresence>
-          {editing && (
-            <motion.div
-              className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <motion.div
-                className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <button
-                  onClick={() => setEditing(null)}
-                  className="absolute top-2 right-2 text-gray-600 hover:text-black"
-                >
-                  <X size={20} />
-                </button>
-                <h2 className="text-lg font-semibold mb-4">
-                  Editar {editing.type === "tipo" ? "Tipo" : "Color"}
-                </h2>
-                <form
-                  onSubmit={async (e) => {
-                    e.preventDefault();
-                    if (editing.type === "tipo") {
-                      await updateTipo(editing.id, { nombre: editing.nombre });
-                    } else {
-                      await updateColor(editing.id, { nombre: editing.nombre });
-                    }
-                    setEditing(null);
-                    await load();
-                  }}
-                  className="grid gap-3"
-                >
-                  <div>
-                    <label className="label">Nombre</label>
-                    <input
-                      className="input"
-                      value={editing.nombre}
-                      onChange={(e) =>
-                        setEditing({ ...editing, nombre: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <button className="btn-primary mt-2" type="submit">
-                    Actualizar
-                  </button>
-                </form>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
+        <EditAttributeModal
+          editing={editing}
+          setEditing={setEditing}
+          onUpdate={onUpdate}
+        />
+      </div>
     </>
   );
 }
