@@ -93,16 +93,9 @@ export default function Sales() {
       try {
         await deleteSale(id);
         await load();
-        toast({
-          title: "Venta eliminada",
-          description: "La venta se ha eliminado correctamente.",
-        });
+        notifySuccess("La venta se ha eliminado correctamente.", "✅ Venta eliminada");
       } catch (error: any) {
-        toast({
-          title: "Error al eliminar",
-          description: error.message,
-          variant: "destructive",
-        });
+        notifyError(error.message, "❌ Error al eliminar");
       }
     }
   };

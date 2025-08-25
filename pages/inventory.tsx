@@ -7,6 +7,7 @@ import {
   getTipos,
   getColors,
 } from "../lib/api";
+import { notifySuccess, notifyError } from "@/lib/notifications";
 import { useToast } from "../hooks/use-toast";
 import Header from "@/components/Header";
 import AddProductForm from "@/components/inventory/AddProductForm";
@@ -51,11 +52,19 @@ export default function Inventory() {
       formData.append("foto", foto);
     }
 
-    await createProduct(formData);
-    setForm({ tipoId: 0, colorId: 0, talla: "", cantidad: 0, precio: 0 });
-    setFoto(null);
-    setShowAddForm(false);
-    await load();
+    try {
+      await createProduct(formData);
+      setForm({ tipoId: 0, colorId: 0, talla: "", cantidad: 0, precio: 0 });
+      setFoto(null);
+      setShowAddForm(false);
+      await load();
+      notifySuccess(
+        "El producto se ha creado correctamente.",
+        "✅ Producto creado",
+      );
+    } catch (error: any) {
+      notifyError(error.message, "❌ Error al crear");
+    }
   };
 
   const onDelete = async (id: number) => {
@@ -63,16 +72,12 @@ export default function Inventory() {
       try {
         await deleteProduct(id);
         await load();
-        toast({
-          title: "Producto eliminado",
-          description: "El producto se ha eliminado correctamente.",
-        });
+        notifySuccess(
+          "El producto se ha eliminado correctamente.",
+          "✅ Producto eliminado",
+        );
       } catch (error: any) {
-        toast({
-          title: "Error al eliminar",
-          description: error.message,
-          variant: "destructive",
-        });
+        notifyError(error.message, "❌ Error al eliminar");
       }
     }
   };
@@ -92,10 +97,18 @@ export default function Inventory() {
       formData.append("foto", editingFoto);
     }
 
-    await updateProduct(editing.id, formData);
-    setEditing(null);
-    setEditingFoto(null);
-    await load();
+    try {
+      await updateProduct(editing.id, formData);
+      setEditing(null);
+      setEditingFoto(null);
+      await load();
+      notifySuccess(
+        "El producto se ha actualizado correctamente.",
+        "✅ Producto actualizado",
+      );
+    } catch (error: any) {
+      notifyError(error.message, "❌ Error al actualizar");
+    }
   };
 
   return (
